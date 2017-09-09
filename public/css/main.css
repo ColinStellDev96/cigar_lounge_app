@@ -1,0 +1,79 @@
+body {
+    background-color: #34291b;
+    font-family: Arial, sans-serif;
+}
+
+#main-block {
+    margin: 100px 120px;
+}
+
+#mainlogo {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 80px;
+    height: 500px;
+}
+
+h3 {
+    display: inline-block;
+    text-transform: uppercase;
+    color: #f3e598;
+    padding-right: 20px;
+    font-size: 40px;
+    cursor: pointer;
+    border: 3px solid;
+    border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
+    border-image-slice: 1;
+    margin-right: 20px;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+h3:hover {
+    color: #c9a35e;
+    cursor: pointer;
+}
+
+.right-signup {
+    margin-right: 80px;
+    max-width: 400px;
+    min-width: 400px;
+    height: 500px;
+    margin-top: 21%;
+    margin-bottom: 10%;
+    color: #c9a35e;
+    text-transform: uppercase;
+}
+
+#signUpform,
+#loginForm {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+input {
+    color: #f3e598;
+}
+
+.form-control {
+    background-color: #f3e598;
+    border-color: #c9a35e;
+    font-size: 16px;
+}
+
+.btn {
+    display: block;
+    margin-top: 30px;
+    background-color: #34291b;
+    border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
+    border-image-slice: 1;
+    border-width: 3px;
+    color: #f3e598;
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.btn:hover {
+    color: #c9a35e;
+}

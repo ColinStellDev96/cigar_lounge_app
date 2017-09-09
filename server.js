@@ -21,7 +21,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // STATIC
 app.use(express.static('./public'));
 
-
+app.get('/', function (req, res){
+    res.sendFile('/html/index.html', {root:'./public'});
+});
 
 // APP LISTEN
 app.listen(8080);
