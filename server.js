@@ -129,17 +129,17 @@ app.get('/', function (req, res){
 });
 
 app.get('/lounge', loginCheck, function (req, res){
-    res.sendFile('/html/lounge.html', {root:'./public'});
-    // UserModel.findOne({_id:req.session._id, function(err, user){
-    //     if(err){console.log('err?', err);}
-    //     else if (user) {
-    //         console.log(user);
-    //         res.sendFile('/html/lounge.html', {root: './public'});
-    //     }
-    //     else {
-    //         res.redirect('/');
-    //     }
-    // }});
+    // res.sendFile('/html/lounge.html', {root:'./public'});
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+        if(err){console.log('err?', err);}
+        else if (user) {
+            console.log(user);
+            res.sendFile('/html/lounge.html', {root: './public'});
+        }
+        else {
+            res.redirect('/');
+        }
+    });
 });
 
 app.get('/me', loginCheckAjax, function (req, res){
