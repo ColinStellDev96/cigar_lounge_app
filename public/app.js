@@ -21,7 +21,7 @@ Vue.component('cigar-navbar',{
                 <a class="nav-link" href="#">{{nav3}}</a>
               </li>
             </ul>
-              <a href="/html/index.html"><button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button></a>
+              <a href="/logout"><button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button></a>
           </div>
     </nav>
     `,

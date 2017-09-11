@@ -2,6 +2,12 @@ $(document).ready(function() {
 
     // VUE COMPONENTS
     Vue.component('landing-page', {
+        data: () => {
+            return {
+            username: '',
+            password: '',
+            };
+        },
         template: `
     <div class='row' id="main-block">
         <div class="col left-logo">
@@ -10,42 +16,62 @@ $(document).ready(function() {
         <div class="col">
           <!-- Toggle Header -->
           <div class="right-signup">
-              <h3 id="signUpHead">{{signup}}</h3><h3 id="loginHead">{{login}}</h3>
+              <h3 id="signUpHead">{{signuphead}}</h3><h3 id="loginHead">{{loginhead}}</h3>
+              <!-- <h3 v-on:click="log">asdfghjkl</h3>-->
 
                   <!-- Sign Up Form -->
                   <form id="signupForm">
                         <div class="form-group">
-                            <label>{{username}}</label>
-                            <input type="username" class="form-control" placeholder="Username" required>
+                            <label>{{userhead}}</label>
+                            <input v-model="username" type="username" class="form-control" placeholder="Username" required>
                         </div>
                         <div class="form-group">
-                            <label>{{password}}</label>
-                            <input type="password" class="form-control" placeholder="Password" required>
+                            <label>{{passhead}}</label>
+                            <input v-model="password" type="password" class="form-control" placeholder="Password" required>
                         </div>
-                        <button type="submit" class="btn btn-default" id="signUp">{{signup}}</button>
+                        <input v-on:click="signUp($event)" type="submit" class="btn btn-default">
                     </form>
 
                     <!-- Login Form -->
                     <form id="loginForm" hidden>
                         <div class="form-group">
-                            <label>{{username}}</label>
-                            <input type="username" class="form-control" placeholder="Username" required>
+                            <label>{{userhead}}</label>
+                            <input v-model="username" type="username" class="form-control" placeholder="Username" required>
                         </div>
                         <div class="form-group">
-                            <label>{{password}}</label>
-                            <input type="password" class="form-control" placeholder="Password" required>
+                            <label>{{passhead}}</label>
+                            <input v-model="password" type="password" class="form-control" placeholder="Password" required>
                         </div>
-                        <button type="login" class="btn btn-default">Login</button>
+                        <button v-on:click="login($event)" type="submit" class="btn btn-default">Login</button>
                     </form>
             </div>
         </div>
     </div>
     `,
-        props: ['signup', 'login', 'username', 'password']
+        props: ['signuphead', 'loginhead', 'userhead', 'passhead'],
+        methods: {
+            log: function() {console.log(this);
+            },
+            signUp: function(event){
+                event.preventDefault();
+                console.log(this.username, this.password);
+                $.post('/signup', { username:this.username, password:this.password }, function(data){
+                    console.log(data);
+                    window.location="/lounge";
+                });
+            },
+            login: function(event){
+                event.preventDefault();
+                $.post('/login', { username:this.username, password:this.password }, function(data){
+                    console.log(data);
+                    window.location='/lounge';
+                });
+        }
+    },
     });
 
     // VUE APP
-    var mainVm = new Vue({el: '#app'});
+    var mainVm = new Vue({el: '#app'}); // END VUE APP
 
     // SIGN-UP | LOGIN TOGGLE
     $('#loginHead').on('click', function() {
@@ -59,31 +85,4 @@ $(document).ready(function() {
         $('#signupForm').show();
     });
 
-    // SIGN-UP AND LOGIN EVENTS
-    // SIGN-UP
-    $('#signupForm').on('submit', function(event){
-        event.preventDefault();
-        var signupInfo = {
-            username: $('#signupForm .username').val(),
-            password: $('#signupForm .password').val()
-        };
-        $.post('/signup', signupForm, function(data){
-            console.log(data);
-            window.location.href="/lounge";
-        });
-    });
-
-    //LOGIN
-    $('#loginForm').on('submit', function(event){
-        event.preventDefault();
-        var loginInfo = {
-            username: $('#loginForm .username').val(),
-            password: $('#loginForm .password').val()
-        };
-        $.post('/login', loginInfo, function(data){
-            console.log(data);
-            window.location.href='/lounge';
-        });
-    });
-
-});
+}); // END OF JS DOCUMENT.READY()
