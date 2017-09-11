@@ -25,5 +25,9 @@ app.get('/', function (req, res){
     res.sendFile('/html/index.html', {root:'./public'});
 });
 
+app.get('/lounge', function (req, res){
+    res.sendFile('/html/lounge.html', {root: './public'});
+});
+
 // APP LISTEN
 app.listen(8080);

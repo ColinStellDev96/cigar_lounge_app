@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+// VUE COMPONENTS
+
     Vue.component('landing-page', {
     template: `
     <div class='row' id="main-block">
@@ -52,10 +54,10 @@ $(document).ready(function(){
     ]
 });
 
-var mainVm = new Vue({    el: '#app'
-});
+// VUE APP
+var mainVm = new Vue({el: '#app'});
 
-    // SIGN-UP | LOGIN TOGGLE
+// SIGN-UP | LOGIN TOGGLE
     $('#loginHead').on('click', function (){
         $('#signupForm').hide();
         $('#loginForm').removeAttr('hidden');
@@ -66,6 +68,6 @@ var mainVm = new Vue({    el: '#app'
         $('#loginForm').hide();
         $('#signupForm').show();
     });
-    // END TOGGLE
+// END TOGGLE
 
 });
