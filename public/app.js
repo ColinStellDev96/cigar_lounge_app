@@ -21,7 +21,7 @@ Vue.component('cigar-navbar',{
                 <a class="nav-link" href="#">{{nav3}}</a>
               </li>
             </ul>
-              <button class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button>
+              <a href="/html/index.html"><button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button></a>
           </div>
     </nav>
     `,
@@ -47,4 +47,6 @@ Vue.component('lounge-footer', {
 // VUE APP
 var mainVm = new Vue({el: '#lounge_app'});
 
-});
+
+
+}); //END DOCUMENT

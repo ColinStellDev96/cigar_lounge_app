@@ -30,6 +30,25 @@ body {
     color: #c9a35e;
 }
 
+#logout-btn {
+    background-color: #34291b;
+    border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
+    border-image-slice: 1;
+    border-width: 3px;
+    color: #f3e598;
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#logout-btn:hover {
+    color: #c9a35e;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .col-12 {
     border: solid 3px;
     border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
