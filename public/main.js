@@ -16,7 +16,7 @@ $(document).ready(function() {
         <div class="col">
           <!-- Toggle Header -->
           <div class="right-signup">
-              <h3 id="signUpHead">{{signuphead}}</h3><h3 id="loginHead">{{loginhead}}</h3>
+              <h3 id="signUpHead" class="current">{{signuphead}}</h3><h3 id="loginHead">{{loginhead}}</h3>
               <!-- <h3 v-on:click="log">asdfghjkl</h3>-->
 
                   <!-- Sign Up Form -->
@@ -76,13 +76,17 @@ $(document).ready(function() {
     // SIGN-UP | LOGIN TOGGLE
     $('#loginHead').on('click', function() {
         $('#signupForm').hide();
+        $('#signUpHead').removeClass('current');
         $('#loginForm').removeAttr('hidden');
         $('#loginForm').show();
+        $('#loginHead').addClass('current');
     });
 
     $('#signUpHead').on('click', function() {
         $('#loginForm').hide();
+        $('#loginHead').removeClass('current');
         $('#signupForm').show();
+        $('#signUpHead').addClass('current');
     });
 
 }); // END OF JS DOCUMENT.READY()
