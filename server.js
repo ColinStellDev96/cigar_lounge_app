@@ -173,7 +173,7 @@ app.get('/users', function(req,res){
 
 app.get('/cigars', function(req, res){
     CigarModel.find({}, function(err, data){
-        console.log('cigars', data);
+        // console.log('cigars', data);
         res.send(data);
     });
 });

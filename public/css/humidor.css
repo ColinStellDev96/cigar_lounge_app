@@ -1,9 +1,14 @@
 .humidor-con {
     margin-top: 15px;
+    height: 700px;
+    overflow: scroll;
+    border: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
 }
 
 .humidor-col-12 {
-    border: solid 3px;
+    border: solid 5px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
 }
@@ -18,4 +23,73 @@
 
 .humidor-search {
     border: none;
+}
+
+.humidor-deeprow {
+    margin: 15px 0;
+}
+
+.cigar-info {
+    color: #f3e598;
+    border: 3px solid
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+.cigar-info h2 {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.cigar-name {
+    color: #bb8b49;
+}
+
+.cigar-info h4 {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #f3e598;
+    border-bottom: solid 3px #bb8b49;
+}
+
+.cigar-str {
+    color: #bb8b49;
+}
+
+.cigar-info img {
+    float: left;
+    margin: 0 5px 15px 0;
+    height: 150px;
+    border: solid 5px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+#par {
+    margin-top: 18px;
+}
+
+.cigar-info p {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.color {
+    color: #bb8b49;
+}
+
+.cigar-info a {
+    color: #bb8b49;
+}
+
+.fa {
+    margin: 25px 125px;
+    font-size: 100px;
+}
+
+.fa:hover {
+    color: #bb8b49;
+    cursor: pointer;
 }

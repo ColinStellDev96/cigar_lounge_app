@@ -1,18 +1,20 @@
 <div id="humidorStyle">
-    <div class="container humidor-con">
-        <div class="row humidor-row">
-            <div class="col-12 humidor-col-12">
-                <div class="form-group row humidor-form">
-                      <div class="col-12 humidor-search">
-                        <input class="form-control" type="search" value="Search Cigars" id="search-input">
-                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row humidor-row">
-            <div class="col-12 humidor-col-12">
 
+    <div class="container humidor-con">
+    <cigar-search></cigar-search>
+
+                <cigar-display v-for="cigar in cigars"
+                :key="cigar._id"
+                v-bind:brand="cigar.brand"
+                v-bind:name="cigar.name"
+                v-bind:size="cigar.size"
+                v-bind:gauge="cigar.gauge"
+                v-bind:strength="cigar.strength"
+                v-bind:wrapper="cigar.wrapper"
+                v-bind:imgurl="cigar.image_url"
+                v-bind:buyurl="cigar.buy_url"
+                v-bind:urlcopy="cigar.url_copy"
+                >
+                </cigar-display>
             </div>
-        </div>
-    </div>
 </div>

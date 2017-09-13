@@ -3,6 +3,12 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.lounge-con {
+    margin-top: 15px;
+    height: 700px;
+    overflow: scroll;
+}
+
 .navbar {
     background-color: #36281b;
     border-bottom: 5px solid;
@@ -51,14 +57,13 @@ router-link:hover {
     text-decoration: none;
 }
 
-.col-12 {
+.lounge-col-12 {
     border: solid 3px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
 }
 
 #userInfo {
-    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -112,7 +117,7 @@ router-link:hover {
 }
 
 footer p {
-    padding: 5px;
+    padding: 15px;
     color: #f3e598;
     border-top: solid 5px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);

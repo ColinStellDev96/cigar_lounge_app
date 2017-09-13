@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 //VUE COMPONENTS
 // NAVBAR
 Vue.component('cigar-navbar',{
@@ -41,8 +39,61 @@ Vue.component('lounge-footer', {
     ]
 });
 
-//END COMPONENTS
+// SEARCH
+Vue.component('cigar-search', {
+    template: `
+    <div class="row humidor-row">
+        <div class="col-12 humidor-col-12">
+            <div class="form-group row humidor-form">
+                  <div class="col-12 humidor-search">
+                    <input class="form-control" type="search" value="Search Cigars" id="search-input">
+                 </div>
+            </div>
+        </div>
+    </div>
+    `
+});
 
+Vue.component('cigar-display', {
+    template :`
+    <div class="row humidor-deeprow">
+    <div class="col-12 humidor-col-12">
+        <div class="cigar-info">
+            <h2>{{brand}} <span class="cigar-name">"{{name}}"</span> {{size}}"</h2>
+            <h4>Strength: <span class="cigar-str">{{strength}}</span></h4>
+            <div class="row">
+                <div class="col">
+                  <img :src='imgurl' alt='cigar_image' class="cigarImg center-block">
+                  <img src="/imgs/ci_logo.png" alt='cigars international logo' class="ciImg">
+                </div>
+                <div class="col">
+                  <p id="par">Gauge: <span class="color">{{gauge}}<span></p>
+                  <p>Wrapper: <span class="color">{{wrapper}}<span></p>
+                  <a :href='buyurl' target='_blank'><p>{{urlcopy}}</p></a>
+                </div>
+                <div class="col">
+                    <i v-on:click id="addCigar" class="fa fa-plus-circle center-block" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    `,
+    props: [
+        'brand',
+        'name',
+        'size',
+        'gauge',
+        'strength',
+        'wrapper',
+        'imgurl',
+        'buyurl',
+        'urlcopy'
+    ]
+});
+
+//END COMPONENTS
 
 var myRouter = new VueRouter({
     routes: [
@@ -58,7 +109,21 @@ var myRouter = new VueRouter({
             path:'/humidor',
             component: function(resolve, reject){
                 $.get('/html/humidor.html', function(htmlFromServer){
-                    resolve({template: htmlFromServer});
+                    resolve({
+                        template: htmlFromServer,
+                        data: function(){
+                            return {cigars: []};
+                        },
+                        created: function() {
+                            var thatVm = this;
+                            $.get('/cigars', function(data){
+                                // console.log(data);
+                                thatVm.cigars = data;
+                                // console.log(this);
+                                // console.log(this.cigars);
+                            });
+                        }
+                    });
                 });
             }
         }
@@ -69,14 +134,15 @@ var myRouter = new VueRouter({
 var mainVm = new Vue({
     el: '#lounge_app',
     router: myRouter,
+    data: {
+        cigars: {},
+    },
     created: function() {
-                $.get('/cigars', function(data){
-                console.log(data);
-                });
-             }
+        window.location='#/lounge';
+        $.get('/cigars', function(data){
+            // console.log(data);
+            this.cigars = data;
+            // console.log(this.cigars);
+        });
+    }
 });
-
-
-
-
-}); //END DOCUMENT
