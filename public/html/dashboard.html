@@ -4,10 +4,11 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>The Cigar Lounge App</title>
+            <title>Cigar Lounge App: Lounge</title>
             <!-- SCRIPT TAGS -->
             <!-- Vue.js -->
             <script src="https://unpkg.com/vue"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.7.0/vue-router.js"></script>
             <!-- jQuery -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <!-- Bootstrap Script Tags -->
@@ -25,13 +26,17 @@
 
         <body>
 
-            <div id='app'>
-                <landing-page signuphead="Sign Up" loginhead="Login" userhead="Username" passhead="Password"></landing-page>
+            <div id='lounge_app'>
+                <cigar-navbar nav1="The Lounge" nav2="The Humidor" nav3="My Cigar Locker" logout="Logout"></cigar-navbar>
+
+                <router-view></router-view>
+
+                <lounge-footer footer-copy="&copy; 2017 The Cigar Lounge App"></lounge-footer>
+
             </div>
 
-
             <!-- LOCAL MAIN.JS-->
-            <script src='/main.js'></script>
+            <script src='/app.js'></script>
         </body>
 
     </html>

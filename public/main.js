@@ -57,14 +57,14 @@ $(document).ready(function() {
                 console.log(this.username, this.password);
                 $.post('/signup', { username:this.username, password:this.password }, function(data){
                     console.log(data);
-                    window.location="/lounge";
+                    window.location="/dashboard";
                 });
             },
             login: function(event){
                 event.preventDefault();
                 $.post('/login', { username:this.username, password:this.password }, function(data){
                     console.log(data);
-                    window.location='/lounge';
+                    window.location='/dashboard';
                 });
         }
     },

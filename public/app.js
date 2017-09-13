@@ -1,24 +1,23 @@
 $(document).ready(function(){
 
 //VUE COMPONENTS
-
 // NAVBAR
 Vue.component('cigar-navbar',{
     template: `
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-          <a class="navbar-brand" href="/html/lounge.html">
+          <router-link class="navbar-brand" to="/lounge">
             <img src="/imgs/Cigar Lounge App.jpg" id="nav_logo" class="d-inline-block align-top" alt="">
-          </a>
+        </router-link>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item">
-                <a class="nav-link" href="/html/lounge.html">{{nav1}}</a>
+                <router-link class="nav-link" to="/lounge">{{nav1}}</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">{{nav2}}</a>
+                <router-link class="nav-link" to="/humidor">{{nav2}}</router-link>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">{{nav3}}</a>
+                <router-link class="nav-link" to="#">{{nav3}}</router-link>
               </li>
             </ul>
               <a href="/logout"><button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button></a>
@@ -32,8 +31,6 @@ Vue.component('cigar-navbar',{
     ]
 });
 
-
-
 // FOOTER
 Vue.component('lounge-footer', {
     template: `<footer>
@@ -44,8 +41,35 @@ Vue.component('lounge-footer', {
     ]
 });
 
+//END COMPONENTS
+
+
+var myRouter = new VueRouter({
+    routes: [
+        {
+            path: '/lounge',
+            component: function(resolve, reject){
+                $.get('/html/lounge.html', function(htmlFromServer){
+                    resolve({template: htmlFromServer});
+                });
+            }
+        },
+        {
+            path:'/humidor',
+            component: function(resolve, reject){
+                $.get('/html/humidor.html', function(htmlFromServer){
+                    resolve({template: htmlFromServer});
+                });
+            }
+        }
+    ]
+});
+
+
+
+
 // VUE APP
-var mainVm = new Vue({el: '#lounge_app'});
+var mainVm = new Vue({el: '#lounge_app', router: myRouter});
 
 
 

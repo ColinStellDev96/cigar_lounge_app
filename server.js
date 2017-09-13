@@ -128,13 +128,13 @@ app.get('/', function (req, res){
     res.sendFile('/html/index.html', {root:'./public'});
 });
 
-app.get('/lounge', loginCheck, function (req, res){
+app.get('/dashboard', loginCheck, function (req, res){
     // res.sendFile('/html/lounge.html', {root:'./public'});
     UserModel.findOne({_id:req.session._id}, function(err, user){
         if(err){console.log('err?', err);}
         else if (user) {
             console.log(user);
-            res.sendFile('/html/lounge.html', {root: './public'});
+            res.sendFile('/html/dashboard.html', {root: './public'});
         }
         else {
             res.redirect('/');
