@@ -1,0 +1,21 @@
+.humidor-con {
+    margin-top: 15px;
+}
+
+.humidor-col-12 {
+    border: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+.humidor-row {
+    margin: 15px 0;
+}
+
+.humidor-form {
+    margin-top: 15px;
+}
+
+.humidor-search {
+    border: none;
+}

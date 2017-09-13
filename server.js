@@ -21,12 +21,13 @@ mongoose.connect('mongodb://localhost/cigar_lounge', function(mongooseErr) {
     else {console.info('Mongoose initialized!');}
 });
 
+
 // USER SCHEMA
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    cigars: 0,
-    unique_cigars: 0,
+    cigars: Number,
+    unique_cigars: Number,
     created: {
         type: Date,
         default: function(){return new Date();}
@@ -35,6 +36,22 @@ var UserSchema = new mongoose.Schema({
 
 // USER MODEL
 var UserModel = mongoose.model('User', UserSchema);
+
+//CIGAR Schema
+var CigarSchema = new mongoose.Schema({
+    brand: String,
+    name: String,
+    size: String,
+    gauge: Number,
+    wrapper: String,
+    origin: String,
+    img_url: String,
+    buy_url: String,
+    url_copy: String
+}, {collection: 'cigar_data'});
+
+// CIGAR MODEL
+var CigarModel = mongoose.model('Cigar', CigarSchema, 'cigar_data');
 
 // LOGIN CHECK FUNCTIONS
 var loginCheck = function(req, res, next){
@@ -145,6 +162,19 @@ app.get('/dashboard', loginCheck, function (req, res){
 app.get('/me', loginCheckAjax, function (req, res){
     UserModel.findOne({_id:req.session._id}, function(err, user){
         res.send(user);
+    });
+});
+
+app.get('/users', function(req,res){
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+        res.send(user);
+    });
+});
+
+app.get('/cigars', function(req, res){
+    CigarModel.find({}, function(err, data){
+        console.log('cigars', data);
+        res.send(data);
     });
 });
 

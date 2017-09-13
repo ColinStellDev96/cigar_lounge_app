@@ -20,7 +20,7 @@ Vue.component('cigar-navbar',{
                 <router-link class="nav-link" to="#">{{nav3}}</router-link>
               </li>
             </ul>
-              <a href="/logout"><button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="logout">{{logout}}</button></a>
+              <a href="/logout"><button id="logout-btn" class="btn my-2 my-sm-0" type="logout">{{logout}}</button></a>
           </div>
     </nav>
     `,
@@ -65,11 +65,17 @@ var myRouter = new VueRouter({
     ]
 });
 
-
-
-
 // VUE APP
-var mainVm = new Vue({el: '#lounge_app', router: myRouter});
+var mainVm = new Vue({
+    el: '#lounge_app',
+    router: myRouter,
+    created: function() {
+                $.get('/cigars', function(data){
+                console.log(data);
+                });
+             }
+});
+
 
 
 
