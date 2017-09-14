@@ -51,7 +51,7 @@
     text-align: center;
     text-transform: uppercase;
     color: #f3e598;
-    border-bottom: solid 3px #bb8b49;
+    border-bottom: solid 2px #bb8b49;
 }
 
 .cigar-str {
@@ -67,10 +67,6 @@
     border-image-slice: 1;
 }
 
-#par {
-    margin-top: 18px;
-}
-
 .cigar-info p {
     font-size: 18px;
     text-transform: uppercase;
@@ -82,6 +78,7 @@
 
 .cigar-info a {
     color: #bb8b49;
+    text-decoration: underline;
 }
 
 .fa {

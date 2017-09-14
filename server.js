@@ -26,13 +26,15 @@ mongoose.connect('mongodb://localhost/cigar_lounge', function(mongooseErr) {
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    cigars: Number,
-    unique_cigars: Number,
+    cigars: {
+        type: Object,
+        default: {}
+    },
     created: {
         type: Date,
         default: function(){return new Date();}
-    }
-});
+    },
+}, { minimize: false });
 
 // USER MODEL
 var UserModel = mongoose.model('User', UserSchema);
@@ -97,6 +99,7 @@ app.use(function (req, res, next){
 //SIGN-UP FRONT-END/BACK-END CONNECTION
 app.post('/signup', function(req, res){
     var newUser = new UserModel(req.body);
+    console.log(newUser);
     bcrypt.genSalt(11, function(saltErr, salt){
         if (saltErr) {console.log(saltErr);}
         console.log('salt generated: ', salt);
@@ -129,7 +132,7 @@ app.post('/login', function (req, res){
                 if (bcryptErr) {console.log(bcryptErr);}
                 else if (!matched) {
                     console.log('Password Does Not Match');
-                    res.send(alert('Failed To Login'));
+                    res.send('Failed To Login');
                 }
                 else {
                     req.session._id = user._id;
@@ -159,24 +162,47 @@ app.get('/dashboard', loginCheck, function (req, res){
     });
 });
 
-app.get('/me', loginCheckAjax, function (req, res){
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-        res.send(user);
-    });
-});
-
-app.get('/users', function(req,res){
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-        res.send(user);
-    });
-});
-
 app.get('/cigars', function(req, res){
     CigarModel.find({}, function(err, data){
         // console.log('cigars', data);
         res.send(data);
     });
 });
+
+app.get('/me', loginCheckAjax, function (req, res){
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+        res.send(user);
+    });
+});
+
+app.put('/me', function(req, res){
+    console.log(req.body);
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+        // console.log(user);
+        if (req.body.cigar in user.cigars){
+            user.cigars[req.body.cigar]++;
+            console.log('smoking again');
+        }
+        else {
+            user.cigars[req.body.cigar] = 1;
+            console.log('smoking for first time');
+        }
+        user.markModified('cigars');
+        user.save(function(err){
+            if(err){
+                res.send('error');
+            }
+            else {
+                res.send(user.cigars);
+            }
+        });
+    });
+    // UserModel.push({"cigars": req.body}, function (err, data){
+    //     console.log(data);
+    // });
+});
+
+
 
 // LOGOUT
 app.get('/logout', function (req,res){

@@ -61,15 +61,22 @@ router-link:hover {
     border: solid 3px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
+    height: 340px;
+    overflow: scroll;
 }
 
 #userInfo {
     margin-bottom: 10px;
 }
 
+.userName {
+    color: #bb8b49;
+}
+
 .text-center {
     color: #f3e598;
     margin: 15px auto;
+    text-transform: capitalize;
 }
 
 .center-block {

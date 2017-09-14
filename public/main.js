@@ -55,14 +55,14 @@ $(document).ready(function() {
             signUp: function(event){
                 event.preventDefault();
                 console.log(this.username, this.password);
-                $.post('/signup', { username:this.username, password:this.password }, function(data){
+                $.post('/signup', { username:this.username, password:this.password, cigars: {} }, function(data){
                     console.log(data);
                     window.location="/dashboard";
                 });
             },
             login: function(event){
                 event.preventDefault();
-                $.post('/login', { username:this.username, password:this.password }, function(data){
+                $.post('/login', { username:this.username, password:this.password, }, function(data){
                     console.log(data);
                     window.location='/dashboard';
                 });

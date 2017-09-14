@@ -1,33 +1,18 @@
 <div id="loungeStyle">
 
         <div class="container lounge-con">
-            <div class="row">
-                <div class="col-12 lounge-col-12" id="userInfo">
-                    <h1 class='text-center'>Welcome to The Cigar Lounge</h1>
-                    <div>
-                        <img src="http://via.placeholder.com/200x200" alt="user_photo" class="img-thumbnail center-block">
-                        <table class="table table-sm cigar-table">
-                            <thead>
-                                <tr>
-                                    <th>Unique Cigars Enjoyed</th>
-                                    <th>Cigars Enjoyed</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <userinfo-dash :username="users.username"
+            :uniquecigars="uniqueCigars"
+            :cigars="totalCigars"
+            >
+            </userinfo-dash>
+
             <div class="row" id="liveFeed">
                 <div class="col-12 lounge-col-12">
                     <h1>Live Activity Feed</h1>
                 </div>
             </div>
+
         </div>
 
     </div>
