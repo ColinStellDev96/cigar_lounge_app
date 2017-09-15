@@ -1,4 +1,5 @@
 //VUE COMPONENTS
+
 // NAVBAR
 Vue.component('cigar-navbar', {
     template: `
@@ -13,16 +14,13 @@ Vue.component('cigar-navbar', {
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/humidor">{{nav2}}</router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="#">{{nav3}}</router-link>
-              </li>
+            </li>
             </ul>
               <a href="/logout"><button id="logout-btn" class="btn my-2 my-sm-0" type="logout">{{logout}}</button></a>
           </div>
     </nav>
     `,
-    props: ['nav1', 'nav2', 'nav3', 'logout']
+    props: ['nav1', 'nav2', 'logout']
 });
 
 // FOOTER
@@ -37,17 +35,34 @@ Vue.component('lounge-footer', {
 
 // LOUNGE USER info
 Vue.component('userinfo-dash', {
+    methods:{
+        photoUp: function (event){
+            var formData = new FormData($('#photoUpload')[0]);
+            var inputs = $('input');
+            console.log(inputs[1]);
+
+            $.ajax({
+                url: '/profile-photo',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        }
+    },
     template: `
     <div class="row">
-        <div class="col-12 lounge-col-12" id="userInfo">
-            <h1 class='text-center'>Welcome to The Cigar Lounge, <span class="userName">{{username}}</span></h1>
+        <div class="col-8 lounge-col-8" id="userInfo">
+            <h1 class='text-center'>Welcome to The Cigar Lounge, <span class="userName">{{user.username}}</span></h1>
             <div>
-                <img src="http://via.placeholder.com/200x200" alt="user_photo" class="img-thumbnail center-block">
                 <table class="table table-sm cigar-table">
                     <thead>
                         <tr>
-                            <th>Unique Cigars Enjoyed</th>
-                            <th>Cigars Enjoyed</th>
+                            <th>Unique Cigars</th>
+                            <th>Total Cigars</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,9 +74,33 @@ Vue.component('userinfo-dash', {
                 </table>
             </div>
         </div>
+        <div class="col-4 locker-col">
+            <h4>{{user.username}}'s Profile</h4>
+            <img :src='user.imgpath' alt="User Photo" class="img-thumbnail center-block">
+            <form id="photoUpload" v-on:submit="photoUp" enctype="form-data">
+                <input name="profile-pic" type="file">
+                <button  class="btn d-inline" type="submit">Upload Photo</button>
+            </form>
+        </div>
     </div>
     `,
-    props: ['username', 'cigars', 'uniquecigars' ]
+    props: ['user', 'cigars', 'uniquecigars' ]
+});
+
+Vue.component('user-cigars', {
+    template: `
+    <div class="row" id="liveFeed">
+        <div class="col-12 lounge-col-12">
+            <h1>{{user.username}}'s Cigar Locker</h1>
+            <div class="userCigars">
+                <img src='cigFeed.image_url'>
+                <p></p>
+                <i class="fa fa-trash-o"></i>
+            </div>
+        </div>
+    </div>
+    `,
+    props: ['user',]
 });
 
 Vue.component('cigar-display', {
@@ -139,13 +178,16 @@ var myRouter = new VueRouter({
                             // console.log(data);
                             thatVm.users = data;
                         });
-                    }
+                    },
                 });
             });
             }
         },
         {
             path: '/humidor',
+            data: {
+                cigFeed: {}
+            },
             component: function(resolve, reject) {
                 $.get('/html/humidor.html', function(htmlFromServer) {
                     resolve({
@@ -157,16 +199,18 @@ var myRouter = new VueRouter({
                             };
                         },
                         methods: {
-                            addCigar: function (cigar){
+                            addCigar: function (cigar, brand, name, img){
                                 window.location='/dashboard';
-                                console.log('cigars!');
+                                // console.log('cigars!');
                                 $.ajax({
                                     method: 'PUT',
                                     url: '/me',
-                                    data: {cigar:cigar._id},
+                                    data: {cigar:cigar._id, brand:cigar.brand, name:cigar.name, img:cigar.image_url},
                                 })
-                                .done(function(data){
-                                    console.log(data);
+                                .done(function (data){
+                                    // console.log(data);
+                                    cigFeed = data;
+                                    console.log(cigFeed);
                                 });
                             }
                         },
@@ -225,7 +269,7 @@ var mainVm = new Vue({
     },
     methods: {
         addCigar: function (event){
-        console.log('cigars!')
+        // console.log('cigars!')
         $.put('/me', {cigars:cigar._id}, function(data){
 
         });

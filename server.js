@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var sessionsModule = require('client-sessions');
+var multer = require('multer');
+var child_process = require('child_process');
 
 // EXPRESS APP
 var app = express();
@@ -34,6 +36,7 @@ var UserSchema = new mongoose.Schema({
         type: Date,
         default: function(){return new Date();}
     },
+    imgpath: String,
 }, { minimize: false });
 
 // USER MODEL
@@ -193,16 +196,30 @@ app.put('/me', function(req, res){
                 res.send('error');
             }
             else {
-                res.send(user.cigars);
+                res.send(req.body);
             }
         });
     });
-    // UserModel.push({"cigars": req.body}, function (err, data){
-    //     console.log(data);
-    // });
 });
 
+//PHOTO UPLOAD
+app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req,res){
+    console.log('body?', req.body);
+    console.log('files?', req.file);
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+            child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
+            user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
+            user.save(function(err){
+                if(err){
+                    res.send('error');
+                }
+                else {
+                    res.send('photo upload success');
+                }
+            });
+        });
 
+});
 
 // LOGOUT
 app.get('/logout', function (req,res){

@@ -1,18 +1,16 @@
 <div id="loungeStyle">
 
         <div class="container lounge-con">
-            <userinfo-dash :username="users.username"
+            <userinfo-dash :user="users"
             :uniquecigars="uniqueCigars"
             :cigars="totalCigars"
             >
             </userinfo-dash>
+            <user-cigars :user="users"
 
-            <div class="row" id="liveFeed">
-                <div class="col-12 lounge-col-12">
-                    <h1>Live Activity Feed</h1>
-                </div>
-            </div>
-
+            >
+            </user-cigars>
         </div>
+
 
     </div>

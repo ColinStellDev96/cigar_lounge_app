@@ -6,7 +6,6 @@ body {
 .lounge-con {
     margin-top: 15px;
     height: 700px;
-    overflow: scroll;
 }
 
 .navbar {
@@ -57,12 +56,56 @@ router-link:hover {
     text-decoration: none;
 }
 
-.lounge-col-12 {
+.lounge-col-8 {
     border: solid 3px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
-    height: 340px;
-    overflow: scroll;
+    width: 700px;
+    height: 300px;
+}
+
+.locker-col {
+    height: 300px;
+}
+
+.locker-col h4 {
+    color: #f3e598;
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+.locker-col img {
+    margin: 0 90px;
+    height: 150px;
+    width: 150px;
+}
+
+.img-thumbnail {
+    background-image: linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    background-image-slice: 1;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+#photoUpload input {
+    margin: 10px 65px;
+    background-color: #34291b;
+    border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
+    border-image-slice: 1;
+    border-width: 3px;
+    color: #f3e598;
+}
+
+.locker-col .btn {
+    display: block;
+    margin: 0 90px;
+    height: 40px;
+    font-size: 16px;
 }
 
 #userInfo {
@@ -85,8 +128,7 @@ router-link:hover {
 }
 
 .cigar-table {
-    max-width: 800px;
-    float: right;
+    max-width: 100%;
     margin: 20px 40px 15px 0px;
 }
 
@@ -106,9 +148,17 @@ router-link:hover {
     border-top: solid 3px #bb8b49;
 }
 
+.lounge-col-12 {
+    border: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+    height: 370px;
+    overflow: scroll;
+    margin-bottom: 15px;
+}
+
 #liveFeed {
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 #liveFeed h1 {
