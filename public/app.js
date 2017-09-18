@@ -90,7 +90,7 @@ Vue.component('userinfo-dash', {
 //CIGAR LOCKER FEED
 Vue.component('user-locker', {
     template: `
-        <h1 class="lockerh1">{{user.username}}'s Cigar Locker <span class='header2'>(Unique Cigars)</span></h1>
+        <h1 class="lockerh1">{{user.username}}'s Cigar Locker <br><span class='header2'>(Unique Cigars)</span></h1>
     `,
     props: ['user']
 });
@@ -103,14 +103,14 @@ Vue.component('user-cigars', {
                     <img :src='image'>
                 </div>
                 <div class="col">
-                    <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s <br> "{{name}}"</span></p>
+                    <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s</span><br> <span class="sizeBrand">{{name}}<br>{{size}}</span></p>
                 </div>
                 <div class="col">
                     <i v-on:click="$emit('deletecigar')" class="fa fa-trash-o"></i>
                 </div>
             </div>
     `,
-    props: ['user', 'brand', 'image', 'name', 'id']
+    props: ['user', 'brand', 'image', 'name', 'size']
 });
 
 // HUMIDOR SEARCH

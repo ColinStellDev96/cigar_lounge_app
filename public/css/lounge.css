@@ -1,6 +1,6 @@
 body {
-    background-color: #36281b;
     font-family: Arial, sans-serif;
+    background-color: #36281b;
 }
 
 .lounge-con {
@@ -205,19 +205,26 @@ router-link:hover {
     color: #f3e598;
     text-align: center;
     font-size: 30px;
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-left: 20px;
 }
 
 .lockerUser {
     text-transform: uppercase;
+    text-decoration: underline;
 }
 
 .header2 {
     font-size: 16px;
+    color: #f3e598;
 }
 
 .lockerBrand {
     color: #bb8b49;
+}
+
+.sizeBrand {
+    color: #f3e598;
 }
 
 #liveFeed i {
@@ -243,4 +250,8 @@ footer p {
     border-top: solid 5px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
+}
+
+footer {
+    background-color: #36281b;
 }
