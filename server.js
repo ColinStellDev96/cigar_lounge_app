@@ -12,32 +12,36 @@ var app = express();
 
 // BODY PARSER
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // STATIC
 app.use(express.static('./public'));
 
 // CONNECT TO MONGODB
 mongoose.connect('mongodb://localhost/cigar_lounge', function(mongooseErr) {
-    if(mongooseErr) {console.error(mongooseErr);}
-    else {console.info('Mongoose initialized!');}
+    if (mongooseErr) {
+        console.error(mongooseErr);
+    } else {
+        console.info('Mongoose initialized!');
+    }
 });
-
 
 // USER SCHEMA
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
     cigars: {
-        type: Object,
-        default: {}
+        type: Array,
+        default: []
     },
     created: {
         type: Date,
-        default: function(){return new Date();}
+        default: function() {
+            return new Date();
+        }
     },
-    imgpath: String,
-}, { minimize: false });
+    imgpath: String
+}, {minimize: false});
 
 // USER MODEL
 var UserModel = mongoose.model('User', UserSchema);
@@ -59,26 +63,24 @@ var CigarSchema = new mongoose.Schema({
 var CigarModel = mongoose.model('Cigar', CigarSchema, 'cigar_data');
 
 // LOGIN CHECK FUNCTIONS
-var loginCheck = function(req, res, next){
-    if(req.session._id){
+var loginCheck = function(req, res, next) {
+    if (req.session._id) {
         console.log('User Logged In');
         next();
-    }
-    else {
+    } else {
         console.log("No One Logged In");
         res.redirect('/');
     }
 };
 
-var loginCheckAjax = function(req,res,next){
-        if(req.session._id){
-            console.log('User Logged In');
-            next();
-        }
-        else {
-            console.log("No One Logged In");
-            res.redirect({failure:'No One Logged In'});
-        }
+var loginCheckAjax = function(req, res, next) {
+    if (req.session._id) {
+        console.log('User Logged In');
+        next();
+    } else {
+        console.log("No One Logged In");
+        res.redirect({failure: 'No One Logged In'});
+    }
 };
 
 // COOKIES SETUP
@@ -91,31 +93,36 @@ app.use(sessionsModule({
         ephemeral: false,
         httpOnly: true,
         secure: false
-        }
+    }
 }));
 
-app.use(function (req, res, next){
+app.use(function(req, res, next) {
     console.log('session?', req.session);
     next();
 });
 
 //SIGN-UP FRONT-END/BACK-END CONNECTION
-app.post('/signup', function(req, res){
+app.post('/signup', function(req, res) {
     var newUser = new UserModel(req.body);
     console.log(newUser);
-    bcrypt.genSalt(11, function(saltErr, salt){
-        if (saltErr) {console.log(saltErr);}
+    bcrypt.genSalt(11, function(saltErr, salt) {
+        if (saltErr) {
+            console.log(saltErr);
+        }
         console.log('salt generated: ', salt);
 
-        bcrypt.hash(newUser.password, salt, function (hashErr, hashedPassword){
-            if (hashErr){console.log(hashErr);}
+        bcrypt.hash(newUser.password, salt, function(hashErr, hashedPassword) {
+            if (hashErr) {
+                console.log(hashErr);
+            }
             newUser.password = hashedPassword;
 
-            newUser.save(function(saveErr, user){
-                if (saveErr) {console.log(saveErr);}
-                else {
+            newUser.save(function(saveErr, user) {
+                if (saveErr) {
+                    console.log(saveErr);
+                } else {
                     req.session._id = user._id;
-                    res.send({success:'success!'});
+                    res.send({success: 'success!'});
                 }
             });
         });
@@ -123,23 +130,25 @@ app.post('/signup', function(req, res){
 });
 
 // LOGIN FRONT-END/BACK-END CONNECTION
-app.post('/login', function (req, res){
-    UserModel.findOne({username: req.body.username}, function(err, user){
-        if (err) {console.log('Username Not Found');}
-        else if (!user) {
+app.post('/login', function(req, res) {
+    UserModel.findOne({
+        username: req.body.username
+    }, function(err, user) {
+        if (err) {
+            console.log('Username Not Found');
+        } else if (!user) {
             console.log('User Not Found');
             res.send(alert('Failed To Log In'));
-        }
-        else {
-            bcrypt.compare(req.body.password, user.password, function(bcryptErr, matched){
-                if (bcryptErr) {console.log(bcryptErr);}
-                else if (!matched) {
+        } else {
+            bcrypt.compare(req.body.password, user.password, function(bcryptErr, matched) {
+                if (bcryptErr) {
+                    console.log(bcryptErr);
+                } else if (!matched) {
                     console.log('Password Does Not Match');
                     res.send('Failed To Login');
-                }
-                else {
+                } else {
                     req.session._id = user._id;
-                    res.send({success:'success'});
+                    res.send({success: 'success'});
                 }
             });
         }
@@ -147,105 +156,167 @@ app.post('/login', function (req, res){
 });
 
 // ROUTING
-app.get('/', function (req, res){
-    res.sendFile('/html/index.html', {root:'./public'});
+app.get('/', function(req, res) {
+    res.sendFile('/html/index.html', {root: './public'});
 });
 
-app.get('/dashboard', loginCheck, function (req, res){
+app.get('/dashboard', loginCheck, function(req, res) {
     // res.sendFile('/html/lounge.html', {root:'./public'});
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-        if(err){console.log('err?', err);}
-        else if (user) {
+    UserModel.findOne({
+        _id: req.session._id
+    }, function(err, user) {
+        if (err) {
+            console.log('err?', err);
+        } else if (user) {
             console.log(user);
             res.sendFile('/html/dashboard.html', {root: './public'});
-        }
-        else {
+        } else {
             res.redirect('/');
         }
     });
 });
 
 // HUMIDOR CIGAR DATA
-app.get('/cigars', function(req, res){
-    CigarModel.find({}, function(err, data){
+app.get('/cigars', function(req, res) {
+    CigarModel.find({}, function(err, data) {
         // console.log('cigars', data);
         res.send(data);
     });
 });
 
 //USER INFO
-app.get('/me', loginCheckAjax, function (req, res){
-    UserModel.findOne({_id:req.session._id}, function(err, user){
+app.get('/me', loginCheckAjax, function(req, res) {
+    UserModel.findOne({
+        _id: req.session._id
+    }, function(err, user) {
         res.send(user);
     });
 });
 
+/*
+Model.findAndUpdate(query, modifier, options, callback)
+*/
+
 // ADDING CIGARS TO USER DATA
-app.put('/me', function(req, res){
+app.put('/me', function(req, res) {
     console.log(req.body);
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-        // console.log(user);
-        if (req.body.cigar in user.cigars){
-            user.cigars[req.body.cigar]++;
-            console.log('smoking again');
+    UserModel.findOneAndUpdate({
+        _id: req.session._id,
+        'cigars.id': req.body.cigar
+    }, {
+        $inc: {
+            "cigars.$.count": 1
         }
-        else {
-            user.cigars[req.body.cigar] = 1;
-            console.log('smoking for first time');
+    }, function(err, user) {
+        if (err) {
+            res.send('error');
+        } else if (!user) {
+            console.log('not user');
+            UserModel.findOneAndUpdate({
+                _id: req.session._id
+            }, { $push: {
+                    cigars : {
+                        id: req.body.cigar,
+                        count: 1
+                    }
+                }
+            }, {
+                new: true,
+                upsert:true
+            }, function(err, data) {
+                    if(err){
+                        console.log(err);
+                        res.send('error');
+                    }
+                    console.log("here's data", data);
+                    res.send(data);
+            });
+        } else {
+            res.send(user);
         }
-        user.markModified('cigars');
-        user.save(function(err){
-            if(err){
-                res.send('error');
-            }
-            else {
-                res.send(req.body);
-            }
-        });
     });
 });
 
-/*
-Model.find(query, projection, callback(err, data))
-*/
-
-app.get('/cigars_enjoyed', function(req, res){
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-        let cigarArr = Object.keys(user.cigars);//.map(key => user.cigars[key]);
-        console.log("cigarArr", cigarArr);
-        CigarModel.find({
-                _id: { $in: cigarArr }
-            }, function(err, data){
-                 console.log('data', data);
-                 res.send(data);
-                });
-        });
-    });
-
-//PHOTO UPLOAD
-app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req,res){
-    // console.log('body?', req.body);
-    // console.log('files?', req.file);
-    UserModel.findOne({_id:req.session._id}, function(err, user){
-            child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
-            user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
-            user.save(function(err){
-                if(err){
-                    res.send('error');
+        app.put('/delete', function(req, res) {
+            console.log('body', req.body);
+            UserModel.findOneAndUpdate({
+                _id: req.session._id,
+                'cigars.id': req.body.cigar
+            }, { $inc: {
+                    "cigars.$.count": -1
                 }
-                else {
-                    res.send('photo upload success');
+            }, function(err, user) {
+                console.log('err', err, 'user', user);
+                if (err) {
+                    res.send('error');
+                } else if (!user) {
+                    res.send();
+                } else {
+                    UserModel.findOneAndUpdate({
+                        _id: req.session._id,
+                        'cigars.count': {$lt:1}
+                    }, {
+                        $pull: {
+                            cigars: {id: req.body.cigar}
+                        }
+                    }, function(err, data){
+                        if(err){
+                            res.send(err);
+                        }
+                        else {
+                            res.send(data);
+                        }
+                    });
                 }
             });
         });
 
-});
+        /*
+Model.find(query, projection, callback(err, data))
+*/
 
-// LOGOUT
-app.get('/logout', function (req,res){
-    req.session.reset();
-    res.redirect('/');
-});
+        app.get('/cigars_enjoyed', function(req, res) {
+            UserModel.findOne({
+                _id: req.session._id
+            }, function(err, user) {
+                let cigarArr = user.cigars.map(cigar => cigar.id);
+                console.log("cigarArr", cigarArr);
+                CigarModel.find({
+                    _id: {
+                        $in: cigarArr
+                    }
+                }, function(err, data) {
+                    //  console.log('data', data);
+                    res.send(data);
+                });
+            });
+        });
 
-// APP LISTEN
-app.listen(8080);
+        //PHOTO UPLOAD
+        app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req, res) {
+            // console.log('body?', req.body);
+            // console.log('files?', req.file);
+            UserModel.findOne({
+                _id: req.session._id
+            }, function(err, user) {
+                child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
+                user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
+                user.save(function(err) {
+                    if (err) {
+                        res.send('error');
+                    } else {
+                        res.send('photo upload success');
+                    }
+                });
+            });
+
+        });
+
+        // LOGOUT
+        app.get('/logout', function(req, res) {
+            req.session.reset();
+            res.redirect('/');
+        });
+
+        // APP LISTEN
+        app.listen(8080);

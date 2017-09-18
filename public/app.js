@@ -90,7 +90,7 @@ Vue.component('userinfo-dash', {
 //CIGAR LOCKER FEED
 Vue.component('user-locker', {
     template: `
-        <h1 class="lockerh1">{{user.username}}'s Cigar Locker</h1>
+        <h1 class="lockerh1">{{user.username}}'s Cigar Locker <span class='header2'>(Unique Cigars)</span></h1>
     `,
     props: ['user']
 });
@@ -106,11 +106,11 @@ Vue.component('user-cigars', {
                     <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s <br> "{{name}}"</span></p>
                 </div>
                 <div class="col">
-                    <i v-on:click="$emit('deleteCigar')" class="fa fa-trash-o"></i>
+                    <i v-on:click="$emit('deletecigar')" class="fa fa-trash-o"></i>
                 </div>
             </div>
     `,
-    props: ['user', 'brand', 'image', 'name']
+    props: ['user', 'brand', 'image', 'name', 'id']
 });
 
 // HUMIDOR SEARCH
@@ -173,18 +173,22 @@ var myRouter = new VueRouter({
                             };
                         },
                         computed: {
-                            uniqueCigars: function() {
+                            totalCigars: function() {
+                                if(!this.users.cigars){
+                                    return 0;
+                                }
                                 var total = 0;
-                                for (var key in this.users.cigars) {
-                                    total++;
+                                for (var cigar of this.users.cigars) {
+                                    total += cigar.count;
                                 }
                                 return total;
                             },
-                            totalCigars: function() {
-                                var total = 0;
-                                for (var key in this.users.cigars) {
-                                    total += this.users.cigars[key];
+                            uniqueCigars: function() {
+                                if (!this.users.cigars){
+                                    return 0;
                                 }
+                                var total = 0;
+                                total = this.users.cigars.length;
                                 return total;
                             }
                         },
@@ -208,8 +212,16 @@ var myRouter = new VueRouter({
                         methods: {
                             deleteCigar: function(cigar){
                                 window.location="/dashboard";
-                                console.log('cigarID');
-                                
+                                console.log('cigarID', cigar._id);
+                                $.ajax({
+                                    method: 'PUT',
+                                    url: '/delete',
+                                    data: {
+                                        cigar: cigar._id,
+                                    }
+                            }).done((data) => {
+                                    console.log(data);
+                                });
                             }
                         }
                     });
@@ -222,7 +234,7 @@ var myRouter = new VueRouter({
                     resolve({
                         template: htmlFromServer,
                         data: function() {
-                            return {cigars: [], cigFeed: {}, search: ''};
+                            return {cigars: [], search: ''};
                         },
                         methods: {
                             addCigar: function(cigar, brand, name, img) {
@@ -232,15 +244,10 @@ var myRouter = new VueRouter({
                                     method: 'PUT',
                                     url: '/me',
                                     data: {
-                                        cigar: cigar._id,
-                                        brand: cigar.brand,
-                                        name: cigar.name,
-                                        img: cigar.image_url
+                                        cigar: cigar._id
                                     }
                                 }).done((data) => {
-                                    // console.log(data);
-                                    cigFeed = data;
-                                    console.log(cigFeed);
+                                    console.log(data);
                                 });
                             }
                         },

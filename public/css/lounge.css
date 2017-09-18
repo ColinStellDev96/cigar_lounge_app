@@ -5,7 +5,7 @@ body {
 
 .lounge-con {
     margin-top: 15px;
-    height: 700px;
+    height: 900px;
 }
 
 .navbar {
@@ -172,7 +172,7 @@ router-link:hover {
     border: solid 3px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
-    height: 370px;
+    height: 570px;
     overflow: scroll;
     margin-bottom: 15px;
 }
@@ -212,6 +212,10 @@ router-link:hover {
     text-transform: uppercase;
 }
 
+.header2 {
+    font-size: 16px;
+}
+
 .lockerBrand {
     color: #bb8b49;
 }
@@ -228,7 +232,7 @@ router-link:hover {
 
 .userCigars {
     margin: 15px 5px;
-    border: 3px solid;
+    border: 5px solid;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
 }
