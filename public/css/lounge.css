@@ -81,8 +81,9 @@ router-link:hover {
 
 .locker-col img {
     margin: 0 90px;
-    height: 150px;
-    width: 150px;
+    margin-top: 15px;
+    height: 200px;
+    width: 200px;
 }
 
 .img-thumbnail {
@@ -92,18 +93,37 @@ router-link:hover {
     border-image-slice: 1;
 }
 
-#photoUpload input {
-    margin: 10px 65px;
-    background-color: #34291b;
-    border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
-    border-image-slice: 1;
-    border-width: 3px;
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
     color: #f3e598;
+    background-color: #36281b;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-top: 30px;
+    margin-left: 40px;
+    border: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.inputfile + label:hover {
+    color: #bb8b49;
+    cursor: pointer;
 }
 
 .locker-col .btn {
-    display: block;
-    margin: 0 90px;
+    display: inline-block;
+    float: right;
     height: 40px;
     font-size: 16px;
 }
@@ -158,17 +178,57 @@ router-link:hover {
 }
 
 #liveFeed {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 #liveFeed h1 {
     padding-bottom: 10px;
-    font-size: 26px;
-    color: #f3e598;
+    font-size: 36px;
+    color: #bb8b49;
     margin: 15px auto;
     text-align: center;
     text-transform: uppercase;
     border-bottom: solid 3px;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+#liveFeed img {
+    height: 200px;
+    margin: 20px 0 20px 50px;
+    border: 5px solid;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+}
+
+#liveFeed p {
+    color: #f3e598;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 50px;
+}
+
+.lockerUser {
+    text-transform: uppercase;
+}
+
+.lockerBrand {
+    color: #bb8b49;
+}
+
+#liveFeed i {
+    font-size: 40px;
+    color: #f3e598;
+    margin: 100px 0 0 200px;
+}
+
+#liveFeed i:hover {
+    color: #bb8b49;
+}
+
+.userCigars {
+    margin: 15px 5px;
+    border: 3px solid;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
 }

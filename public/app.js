@@ -33,10 +33,10 @@ Vue.component('lounge-footer', {
     props: ['footer-copy']
 });
 
-// LOUNGE USER info
+// LOUNGE USER INFO
 Vue.component('userinfo-dash', {
-    methods:{
-        photoUp: function (event){
+    methods: {
+        photoUp: function(event) {
             var formData = new FormData($('#photoUpload')[0]);
             var inputs = $('input');
             console.log(inputs[1]);
@@ -47,7 +47,7 @@ Vue.component('userinfo-dash', {
                 processData: false,
                 contentType: false,
                 type: 'POST',
-                success: function(data){
+                success: function(data) {
                     console.log(data);
                 }
             });
@@ -75,34 +75,45 @@ Vue.component('userinfo-dash', {
             </div>
         </div>
         <div class="col-4 locker-col">
-            <h4>{{user.username}}'s Profile</h4>
             <img :src='user.imgpath' alt="User Photo" class="img-thumbnail center-block">
             <form id="photoUpload" v-on:submit="photoUp" enctype="form-data">
-                <input name="profile-pic" type="file">
+                <input type="file" id ="file" name="profile-pic"  class="inputfile">
+                    <label for="file">Choose file</label>
                 <button  class="btn d-inline" type="submit">Upload Photo</button>
             </form>
         </div>
     </div>
     `,
-    props: ['user', 'cigars', 'uniquecigars' ]
+    props: ['user', 'cigars', 'uniquecigars']
+});
+
+//CIGAR LOCKER FEED
+Vue.component('user-locker', {
+    template: `
+        <h1 class="lockerh1">{{user.username}}'s Cigar Locker</h1>
+    `,
+    props: ['user']
 });
 
 Vue.component('user-cigars', {
+
     template: `
-    <div class="row" id="liveFeed">
-        <div class="col-12 lounge-col-12">
-            <h1>{{user.username}}'s Cigar Locker</h1>
-            <div class="userCigars">
-                <img src='cigFeed.image_url'>
-                <p></p>
-                <i class="fa fa-trash-o"></i>
+            <div class="row userCigars">
+                <div class="col">
+                    <img :src='image'>
+                </div>
+                <div class="col">
+                    <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s <br> "{{name}}"</span></p>
+                </div>
+                <div class="col">
+                    <i v-on:click="$emit('deleteCigar')" class="fa fa-trash-o"></i>
+                </div>
             </div>
-        </div>
-    </div>
     `,
-    props: ['user',]
+    props: ['user', 'brand', 'image', 'name']
 });
 
+// HUMIDOR SEARCH
 Vue.component('cigar-display', {
     template: `
     <div class="row humidor-deeprow">
@@ -146,68 +157,87 @@ Vue.component('cigar-display', {
 
 //END COMPONENTS
 
+//ROUTERS
 var myRouter = new VueRouter({
     routes: [
         {
             path: '/lounge',
             component: function(resolve, reject) {
                 $.get('/html/lounge.html', function(htmlFromServer) {
-                    resolve({template: htmlFromServer,
-                    data: function() {
-                        return {users: []};
-                    },
-                    computed:{
-                            uniqueCigars: function(){
+                    resolve({
+                        template: htmlFromServer,
+                        data: function() {
+                            return {
+                                users: [],
+                                cigarsEnjoyed: []
+                            };
+                        },
+                        computed: {
+                            uniqueCigars: function() {
                                 var total = 0;
-                                for (var key in this.users.cigars){
+                                for (var key in this.users.cigars) {
                                     total++;
                                 }
                                 return total;
                             },
-                            totalCigars: function(){
+                            totalCigars: function() {
                                 var total = 0;
-                                for (var key in this.users.cigars){
+                                for (var key in this.users.cigars) {
                                     total += this.users.cigars[key];
                                 }
                                 return total;
-                            },
-                    },
-                    created: function() {
-                        var thatVm = this;
-                        $.get('/me', function(data) {
-                            // console.log(data);
-                            thatVm.users = data;
-                        });
-                    },
+                            }
+                        },
+                        created: function() {
+                            $.get('/me', (data) => {
+                                // console.log(data);
+                                this.users = data;
+                            });
+                        },
+                        mounted: function() {
+                            $.ajax({
+                                url: '/cigars_enjoyed',
+                                method: 'GET',
+                                success: (data) => {
+                                    // console.log(data);
+                                    this.cigarsEnjoyed = data;
+                                    console.log(this.cigarsEnjoyed);
+                                }
+                            });
+                        },
+                        methods: {
+                            deleteCigar: function(cigar){
+                                window.location="/dashboard";
+                                console.log('cigarID');
+                                
+                            }
+                        }
+                    });
                 });
-            });
             }
-        },
-        {
+        }, {
             path: '/humidor',
-            data: {
-                cigFeed: {}
-            },
             component: function(resolve, reject) {
                 $.get('/html/humidor.html', function(htmlFromServer) {
                     resolve({
                         template: htmlFromServer,
                         data: function() {
-                            return {
-                                cigars: [],
-                                search: ''
-                            };
+                            return {cigars: [], cigFeed: {}, search: ''};
                         },
                         methods: {
-                            addCigar: function (cigar, brand, name, img){
-                                window.location='/dashboard';
+                            addCigar: function(cigar, brand, name, img) {
+                                window.location = '/dashboard';
                                 // console.log('cigars!');
                                 $.ajax({
                                     method: 'PUT',
                                     url: '/me',
-                                    data: {cigar:cigar._id, brand:cigar.brand, name:cigar.name, img:cigar.image_url},
-                                })
-                                .done(function (data){
+                                    data: {
+                                        cigar: cigar._id,
+                                        brand: cigar.brand,
+                                        name: cigar.name,
+                                        img: cigar.image_url
+                                    }
+                                }).done((data) => {
                                     // console.log(data);
                                     cigFeed = data;
                                     console.log(cigFeed);
@@ -216,17 +246,11 @@ var myRouter = new VueRouter({
                         },
                         computed: {
                             filteredList: function() {
-                            console.log(this);
-                              return this.cigars.filter(cigar => {
-                                //   console.log(this.cigars);
-                                return (
-                                    cigar.brand.toLowerCase().includes(this.search.toLowerCase()) ||
-                                    cigar.name.toLowerCase().includes(this.search.toLowerCase()) ||
-                                    cigar.strength.toLowerCase().includes(this.search.toLowerCase()) ||
-                                    cigar.wrapper.toLowerCase().includes(this.search.toLowerCase()) ||
-                                    cigar.origin.toLowerCase().includes(this.search.toLowerCase())
-                                );
-                            });
+                                console.log(this);
+                                return this.cigars.filter(cigar => {
+                                    //   console.log(this.cigars);
+                                    return (cigar.brand.toLowerCase().includes(this.search.toLowerCase()) || cigar.name.toLowerCase().includes(this.search.toLowerCase()) || cigar.strength.toLowerCase().includes(this.search.toLowerCase()) || cigar.wrapper.toLowerCase().includes(this.search.toLowerCase()) || cigar.origin.toLowerCase().includes(this.search.toLowerCase()));
+                                });
                             }
                         },
                         created: function() {
@@ -237,8 +261,7 @@ var myRouter = new VueRouter({
                                 // console.log(this);
                                 // console.log(this.cigars);
                             });
-                        },
-
+                        }
                     });
                 });
             }
@@ -268,11 +291,11 @@ var mainVm = new Vue({
         });
     },
     methods: {
-        addCigar: function (event){
-        // console.log('cigars!')
-        $.put('/me', {cigars:cigar._id}, function(data){
-
-        });
+        addCigar: function(event) {
+            // console.log('cigars!')
+            $.put('/me', {
+                cigars: cigar._id
+            }, function(data) {});
         }
     }
 });

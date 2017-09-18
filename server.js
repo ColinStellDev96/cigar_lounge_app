@@ -165,6 +165,7 @@ app.get('/dashboard', loginCheck, function (req, res){
     });
 });
 
+// HUMIDOR CIGAR DATA
 app.get('/cigars', function(req, res){
     CigarModel.find({}, function(err, data){
         // console.log('cigars', data);
@@ -172,12 +173,14 @@ app.get('/cigars', function(req, res){
     });
 });
 
+//USER INFO
 app.get('/me', loginCheckAjax, function (req, res){
     UserModel.findOne({_id:req.session._id}, function(err, user){
         res.send(user);
     });
 });
 
+// ADDING CIGARS TO USER DATA
 app.put('/me', function(req, res){
     console.log(req.body);
     UserModel.findOne({_id:req.session._id}, function(err, user){
@@ -202,10 +205,27 @@ app.put('/me', function(req, res){
     });
 });
 
+/*
+Model.find(query, projection, callback(err, data))
+*/
+
+app.get('/cigars_enjoyed', function(req, res){
+    UserModel.findOne({_id:req.session._id}, function(err, user){
+        let cigarArr = Object.keys(user.cigars);//.map(key => user.cigars[key]);
+        console.log("cigarArr", cigarArr);
+        CigarModel.find({
+                _id: { $in: cigarArr }
+            }, function(err, data){
+                 console.log('data', data);
+                 res.send(data);
+                });
+        });
+    });
+
 //PHOTO UPLOAD
 app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req,res){
-    console.log('body?', req.body);
-    console.log('files?', req.file);
+    // console.log('body?', req.body);
+    // console.log('files?', req.file);
     UserModel.findOne({_id:req.session._id}, function(err, user){
             child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
             user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
