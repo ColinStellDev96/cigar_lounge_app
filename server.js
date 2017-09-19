@@ -284,7 +284,7 @@ app.get('/cigars_enjoyed', function(req, res) {
     UserModel.findOne({
         _id: req.session._id
     }, function(err, user) {
-        let cigarArr = user.cigars.map(cigar => cigar.id);
+        var cigarArr = user.cigars.map(cigar => cigar.id);
         console.log("cigarArr", cigarArr);
         CigarModel.find({
             _id: {
