@@ -106,6 +106,7 @@ Vue.component('user-cigars', {
                     <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s</span><br> <span class="sizeBrand">{{name}}<br>{{size}}</span></p>
                 </div>
                 <div class="col">
+                    <p> <span class="checkinCount">Check-In's</span><br># </p>
                     <i v-on:click="$emit('deletecigar')" class="fa fa-trash-o"></i>
                 </div>
             </div>

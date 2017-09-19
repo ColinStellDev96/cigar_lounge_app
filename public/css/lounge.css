@@ -227,10 +227,20 @@ router-link:hover {
     color: #f3e598;
 }
 
+.checkinCount {
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-size: 26px;
+}
+
 #liveFeed i {
     font-size: 40px;
     color: #f3e598;
-    margin: 100px 0 0 200px;
+    margin: 10px 0 0 150px;
+    border: 2px solid;
+    border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
+    border-image-slice: 1;
+    padding: 5px;
 }
 
 #liveFeed i:hover {
