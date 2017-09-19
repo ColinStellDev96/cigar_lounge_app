@@ -20,11 +20,13 @@ Vue.component('cigar-navbar', {
           </div>
     </nav>
     `,
-    props: ['nav1', 'nav2',],
+    props: [
+        'nav1', 'nav2'
+    ],
     methods: {
-        logout: function(event){
-            $.get('/logout', function(){
-                window.location=('/');
+        logout: function(event) {
+            $.get('/logout', function() {
+                window.location = ('/');
             });
         }
     }
@@ -40,13 +42,13 @@ Vue.component('lounge-footer', {
     props: ['footer-copy']
 });
 
-+//CIGAR LOCKER FEED
- Vue.component('user-locker', {
-     template: `
++ //CIGAR LOCKER FEED
+Vue.component('user-locker', {
+    template: `
          <h1 class="lockerh1">{{user.username}}'s <span class='cigarLocker'>Cigar Locker</span></h1>
     `,
-     props: ['user']
-  });
+    props: ['user']
+});
 
 // LOUNGE USER INFO
 Vue.component('userinfo-dash', {
@@ -122,15 +124,22 @@ Vue.component('user-cigars', {
                 </div>
             </div>
     `,
-    props: ['user', 'brand', 'image', 'name', 'size', 'ID'],
+    props: [
+        'user',
+        'brand',
+        'image',
+        'name',
+        'size',
+        'ID'
+    ],
     computed: {
-            cigarCount: function(){
-                console.log(this.user, this.ID);
-                return this.user.cigars.find( (cigar) => {
-                    return cigar.id === this.ID;
-                }).count;
-            }
+        cigarCount: function() {
+            console.log(this.user, this.ID);
+            return this.user.cigars.find((cigar) => {
+                return cigar.id === this.ID;
+            }).count;
         }
+    }
 });
 
 // HUMIDOR SEARCH
@@ -187,14 +196,11 @@ var myRouter = new VueRouter({
                     resolve({
                         template: htmlFromServer,
                         data: function() {
-                            return {
-                                users: [],
-                                cigarsEnjoyed: []
-                            };
+                            return {users: [], cigarsEnjoyed: []};
                         },
                         computed: {
                             totalCigars: function() {
-                                if(!this.users.cigars){
+                                if (!this.users.cigars) {
                                     return 0;
                                 }
                                 var total = 0;
@@ -204,7 +210,7 @@ var myRouter = new VueRouter({
                                 return total;
                             },
                             uniqueCigars: function() {
-                                if (!this.users.cigars){
+                                if (!this.users.cigars) {
                                     return 0;
                                 }
                                 var total = 0;
@@ -230,16 +236,16 @@ var myRouter = new VueRouter({
                             });
                         },
                         methods: {
-                            deleteCigar: function(cigar){
-                                window.location="/dashboard";
+                            deleteCigar: function(cigar) {
+                                window.location = "/dashboard";
                                 console.log('cigarID', cigar._id);
                                 $.ajax({
                                     method: 'PUT',
                                     url: '/delete',
                                     data: {
-                                        cigar: cigar._id,
+                                        cigar: cigar._id
                                     }
-                            }).done((data) => {
+                                }).done((data) => {
                                     console.log(data);
                                 });
                             }

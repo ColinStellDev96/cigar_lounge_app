@@ -3,10 +3,7 @@ $(document).ready(function() {
     // VUE COMPONENTS
     Vue.component('landing-page', {
         data: () => {
-            return {
-            username: '',
-            password: '',
-            };
+            return {username: '', password: ''};
         },
         template: `
     <div class='row' id="main-block">
@@ -48,26 +45,36 @@ $(document).ready(function() {
         </div>
     </div>
     `,
-        props: ['signuphead', 'loginhead', 'userhead', 'passhead'],
+        props: [
+            'signuphead', 'loginhead', 'userhead', 'passhead'
+        ],
         methods: {
-            log: function() {console.log(this);
+            log: function() {
+                console.log(this);
             },
-            signUp: function(event){
+            signUp: function(event) {
                 event.preventDefault();
                 console.log(this.username, this.password);
-                $.post('/signup', { username:this.username, password:this.password, cigars: {} }, function(data){
+                $.post('/signup', {
+                    username: this.username,
+                    password: this.password,
+                    cigars: {}
+                }, function(data) {
                     console.log(data);
-                    window.location="/dashboard";
+                    window.location = "/dashboard";
                 });
             },
-            login: function(event){
+            login: function(event) {
                 event.preventDefault();
-                $.post('/login', { username:this.username, password:this.password, }, function(data){
+                $.post('/login', {
+                    username: this.username,
+                    password: this.password
+                }, function(data) {
                     console.log(data);
-                    window.location='/dashboard';
+                    window.location = '/dashboard';
                 });
+            }
         }
-    },
     });
 
     // VUE APP

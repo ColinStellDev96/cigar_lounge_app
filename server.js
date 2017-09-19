@@ -214,22 +214,23 @@ app.put('/me', function(req, res) {
             console.log('not user');
             UserModel.findOneAndUpdate({
                 _id: req.session._id
-            }, { $push: {
-                    cigars : {
+            }, {
+                $push: {
+                    cigars: {
                         id: req.body.cigar,
                         count: 1
                     }
                 }
             }, {
                 new: true,
-                upsert:true
+                upsert: true
             }, function(err, data) {
-                    if(err){
-                        console.log(err);
-                        res.send('error');
-                    }
-                    console.log("here's data", data);
-                    res.send(data);
+                if (err) {
+                    console.log(err);
+                    res.send('error');
+                }
+                console.log("here's data", data);
+                res.send(data);
             });
         } else {
             res.send(user);
@@ -237,86 +238,90 @@ app.put('/me', function(req, res) {
     });
 });
 
-        app.put('/delete', function(req, res) {
-            console.log('body', req.body);
+app.put('/delete', function(req, res) {
+    console.log('body', req.body);
+    UserModel.findOneAndUpdate({
+        _id: req.session._id,
+        'cigars.id': req.body.cigar
+    }, {
+        $inc: {
+            "cigars.$.count": -1
+        }
+    }, function(err, user) {
+        console.log('err', err, 'user', user);
+        if (err) {
+            res.send('error');
+        } else if (!user) {
+            res.send();
+        } else {
             UserModel.findOneAndUpdate({
                 _id: req.session._id,
-                'cigars.id': req.body.cigar
-            }, { $inc: {
-                    "cigars.$.count": -1
+                'cigars.count': {
+                    $lt: 1
                 }
-            }, function(err, user) {
-                console.log('err', err, 'user', user);
+            }, {
+                $pull: {
+                    cigars: {
+                        id: req.body.cigar
+                    }
+                }
+            }, function(err, data) {
                 if (err) {
-                    res.send('error');
-                } else if (!user) {
-                    res.send();
+                    res.send(err);
                 } else {
-                    UserModel.findOneAndUpdate({
-                        _id: req.session._id,
-                        'cigars.count': {$lt:1}
-                    }, {
-                        $pull: {
-                            cigars: {id: req.body.cigar}
-                        }
-                    }, function(err, data){
-                        if(err){
-                            res.send(err);
-                        }
-                        else {
-                            res.send(data);
-                        }
-                    });
+                    res.send(data);
                 }
             });
-        });
+        }
+    });
+});
 
-        /*
+/*
 Model.find(query, projection, callback(err, data))
 */
 
-        app.get('/cigars_enjoyed', function(req, res) {
-            UserModel.findOne({
-                _id: req.session._id
-            }, function(err, user) {
-                let cigarArr = user.cigars.map(cigar => cigar.id);
-                console.log("cigarArr", cigarArr);
-                CigarModel.find({
-                    _id: {
-                        $in: cigarArr
-                    }
-                }, function(err, data) {
-                    //  console.log('data', data);
-                    res.send(data);
-                });
-            });
+app.get('/cigars_enjoyed', function(req, res) {
+    UserModel.findOne({
+        _id: req.session._id
+    }, function(err, user) {
+        let cigarArr = user.cigars.map(cigar => cigar.id);
+        console.log("cigarArr", cigarArr);
+        CigarModel.find({
+            _id: {
+                $in: cigarArr
+            }
+        }, function(err, data) {
+            //  console.log('data', data);
+            res.send(data);
         });
+    });
+});
 
-        //PHOTO UPLOAD
-        app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req, res) {
-            // console.log('body?', req.body);
-            // console.log('files?', req.file);
-            UserModel.findOne({
-                _id: req.session._id
-            }, function(err, user) {
-                child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
-                user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
-                user.save(function(err) {
-                    if (err) {
-                        res.send('error');
-                    } else {
-                        res.send('photo upload success');
-                    }
-                });
-            });
-
+//PHOTO UPLOAD
+app.post('/profile-photo', multer({dest: './public/imgs/'}).single('profile-pic'), function(req, res) {
+    // console.log('body?', req.body);
+    // console.log('files?', req.file);
+    UserModel.findOne({
+        _id: req.session._id
+    }, function(err, user) {
+        child_process.exec(`mv "${__dirname}/public/imgs/${req.file.filename}" "${__dirname}/public/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}"`);
+        user.imgpath = `/imgs/pic${user.username}.${req.file.mimetype.split('/')[1]}`;
+        user.save(function(err) {
+            if (err) {
+                res.send('error');
+            } else {
+                res.send('photo upload success');
+            }
         });
+    });
 
-        // LOGOUT
-        app.get('/logout', function(req, res) {
-            req.session.reset();
-            res.redirect('/');
-        });
+});
 
-        // APP LISTEN
-        app.listen(8080);
+// LOGOUT
+app.get('/logout', function(req, res) {
+    req.session.reset();
+    res.redirect('/');
+});
+
+// APP LISTEN
+app.listen(80);
