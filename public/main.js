@@ -59,8 +59,10 @@ $(document).ready(function() {
                     username: this.username,
                     password: this.password,
                     cigars: {}
-                }, function(data) {
+                }, (data) => {
                     console.log(data);
+                    this.username = "";
+                    this.password = "";
                     window.location = "/dashboard";
                 });
             },
@@ -69,8 +71,10 @@ $(document).ready(function() {
                 $.post('/login', {
                     username: this.username,
                     password: this.password
-                }, function(data) {
+                }, (data) => {
                     console.log(data);
+                    this.username = "";
+                    this.password = "";
                     window.location = '/dashboard';
                 });
             }
