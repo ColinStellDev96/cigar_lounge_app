@@ -54,7 +54,6 @@ $(document).ready(function() {
             },
             signUp: function(event) {
                 event.preventDefault();
-                event.target.reset();
                 console.log(this.username, this.password);
                 $.post('/signup', {
                     username: this.username,
@@ -67,7 +66,6 @@ $(document).ready(function() {
             },
             login: function(event) {
                 event.preventDefault();
-                event.target.reset();
                 $.post('/login', {
                     username: this.username,
                     password: this.password
