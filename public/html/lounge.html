@@ -1,28 +1,33 @@
-<div id="loungeStyle">
+<div>
 
-        <div class="container lounge-con">
-            <userinfo-dash :user="users"
-            :uniquecigars="uniqueCigars"
-            :cigars="totalCigars"
-            >
-            </userinfo-dash>
-
-        <div class="row" id="liveFeed">
-            <div class="col-12 lounge-col-12">
-            <user-locker :user="users"></user-locker>
-                <user-cigars :user="users"
-                v-if="cigarsEnjoyed.length"
-                v-for="cigar in cigarsEnjoyed"
-                :key="cigar._id"
-                :image="cigar.image_url"
-                :brand="cigar.brand"
-                :name="cigar.name"
-                :size="cigar.size"
-                v-on:deletecigar="deleteCigar(cigar)"
+    <div id="loungeStyle">
+        <div id="wrapper">
+            <div class="container lounge-con">
+                <userinfo-dash :user="users"
+                :uniquecigars="uniqueCigars"
+                :cigars="totalCigars"
                 >
-                </user-cigars>
+                </userinfo-dash>
+
+            <div class="row" id="liveFeed">
+                <div class="col-12 lounge-col-12">
+                <user-locker :user="users"></user-locker>
+                    <user-cigars :user="users"
+                    v-if="cigarsEnjoyed.length"
+                    v-for="cigar in cigarsEnjoyed"
+                    :key="cigar._id"
+                    :image="cigar.image_url"
+                    :brand="cigar.brand"
+                    :name="cigar.name"
+                    :size="cigar.size"
+                    :ID="cigar._id"
+                    v-on:deletecigar="deleteCigar(cigar)"
+                    >
+                    </user-cigars>
+                </div>
+            </div>
             </div>
         </div>
-        </div>
-
     </div>
+
+</div>

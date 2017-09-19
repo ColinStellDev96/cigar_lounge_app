@@ -29,15 +29,26 @@ body {
     margin-left: 20px;
     margin-right: 10px;
     text-transform: uppercase;
+    text-decoration: none;
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
     color: #c9a35e;
+    text-decoration: underline;
 }
 
+.navbar-light .navbar-nav .nav-link:focus {
+    color: #c9a35e;
+    text-decoration: underline;
+}
+
+.navbar-light .navbar-nav .nav-link:active {
+    color: #c9a35e;
+    text-decoration: underline;
+}
 
 #logout-btn {
-    background-color: #34291b;
+    background-color: #36281b;
     border-image:linear-gradient(to right, #c9a35e 30%, #f3e598);
     border-image-slice: 1;
     border-width: 3px;
@@ -45,11 +56,22 @@ body {
     font-size: 20px;
     text-transform: uppercase;
     cursor: pointer;
+    text-decoration: none;
 }
-
 
 #logout-btn:hover {
     color: #c9a35e;
+    text-decoration: none;
+}
+
+#logout-btn:focus {
+    color: #c9a35e;
+    text-decoration: none;
+}
+
+#logout-btn:active {
+    color: #c9a35e;
+    text-decoration: none;
 }
 
 router-link:hover {
@@ -79,11 +101,24 @@ router-link:hover {
     border-image-slice: 1;
 }
 
+.locker-col h5 {
+    color: #f3e598;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 14px;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.dateJoin {
+    color: #bb8b49;
+}
+
 .locker-col img {
     margin: 0 90px;
     margin-top: 15px;
-    height: 200px;
-    width: 200px;
+    height: 180px;
+    width: 180px;
 }
 
 .img-thumbnail {
@@ -106,9 +141,9 @@ router-link:hover {
     color: #f3e598;
     background-color: #36281b;
     display: inline-block;
-    padding: 5px 10px;
-    margin-top: 30px;
-    margin-left: 40px;
+    padding: 5px 15px;
+    margin-top: 20px;
+    margin-left: 30px;
     border: solid 3px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
@@ -126,6 +161,7 @@ router-link:hover {
     float: right;
     height: 40px;
     font-size: 16px;
+    margin-top: 20px;
 }
 
 #userInfo {
@@ -209,6 +245,10 @@ router-link:hover {
     margin-left: 20px;
 }
 
+.cigarLocker {
+    color: #f3e598;
+}
+
 .lockerUser {
     text-transform: uppercase;
     text-decoration: underline;
@@ -233,10 +273,16 @@ router-link:hover {
     font-size: 26px;
 }
 
+.checkinNum {
+    margin-top: 10px;
+    color: #bb8b49;
+    font-size: 36px;
+}
+
 #liveFeed i {
     font-size: 40px;
     color: #f3e598;
-    margin: 10px 0 0 150px;
+    margin: 10px 0 0 158px;
     border: 2px solid;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
@@ -245,6 +291,9 @@ router-link:hover {
 
 #liveFeed i:hover {
     color: #bb8b49;
+    border: 2px solid;
+    border-image:linear-gradient(to right, #f3e598, #c9a35e, #bb8b49);
+    border-image-slice: 1;
 }
 
 .userCigars {
@@ -255,11 +304,12 @@ router-link:hover {
 }
 
 footer p {
-    padding: 15px;
+    padding-top: 15px;
     color: #f3e598;
     border-top: solid 5px;
     border-image:linear-gradient(to right, #bb8b49, #c9a35e, #f3e598);
     border-image-slice: 1;
+    text-decoration: none;
 }
 
 footer {

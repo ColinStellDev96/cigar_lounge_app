@@ -16,22 +16,37 @@ Vue.component('cigar-navbar', {
                 <router-link class="nav-link" to="/humidor">{{nav2}}</router-link>
             </li>
             </ul>
-              <a href="/logout"><button id="logout-btn" class="btn my-2 my-sm-0" type="logout">{{logout}}</button></a>
+              <button v-on:click="logout($event)" id="logout-btn" class="btn my-2 my-sm-0" type="logout">Logout</button>
           </div>
     </nav>
     `,
-    props: ['nav1', 'nav2', 'logout']
+    props: ['nav1', 'nav2',],
+    methods: {
+        logout: function(event){
+            $.get('/logout', function(){
+                window.location=('/');
+            });
+        }
+    }
 });
 
 // FOOTER
 Vue.component('lounge-footer', {
     template: `
         <footer>
-            <p class="text-center">{{footerCopy}}</p>
+            <p class="text-center">{{footerCopy}}<br>Created by Colin Stell</p>
         </footer>
         `,
     props: ['footer-copy']
 });
+
++//CIGAR LOCKER FEED
+ Vue.component('user-locker', {
+     template: `
+         <h1 class="lockerh1">{{user.username}}'s <span class='cigarLocker'>Cigar Locker</span></h1>
+    `,
+     props: ['user']
+  });
 
 // LOUNGE USER INFO
 Vue.component('userinfo-dash', {
@@ -75,6 +90,7 @@ Vue.component('userinfo-dash', {
             </div>
         </div>
         <div class="col-4 locker-col">
+            <h5>{{user.username}} joined on: <span class='dateJoin'>{{new Date(user.created).toDateString()}}</span></h5>
             <img :src='user.imgpath' alt="User Photo" class="img-thumbnail center-block">
             <form id="photoUpload" v-on:submit="photoUp" enctype="form-data">
                 <input type="file" id ="file" name="profile-pic"  class="inputfile">
@@ -87,16 +103,8 @@ Vue.component('userinfo-dash', {
     props: ['user', 'cigars', 'uniquecigars']
 });
 
-//CIGAR LOCKER FEED
-Vue.component('user-locker', {
-    template: `
-        <h1 class="lockerh1">{{user.username}}'s Cigar Locker <br><span class='header2'>(Unique Cigars)</span></h1>
-    `,
-    props: ['user']
-});
-
+// DISPLAY CIGARS USER HAS ENJOYED
 Vue.component('user-cigars', {
-
     template: `
             <div class="row userCigars">
                 <div class="col">
@@ -106,12 +114,23 @@ Vue.component('user-cigars', {
                     <p><span class="lockerUser">{{user.username}} Enjoyed:</span><br> <span class="lockerBrand">{{brand}}'s</span><br> <span class="sizeBrand">{{name}}<br>{{size}}</span></p>
                 </div>
                 <div class="col">
-                    <p> <span class="checkinCount">Check-In's</span><br># </p>
+                    <p> <span class="checkinCount">Check-In's</span><br>
+                    <span class="checkinNum">
+                        {{cigarCount}}
+                    </span></p>
                     <i v-on:click="$emit('deletecigar')" class="fa fa-trash-o"></i>
                 </div>
             </div>
     `,
-    props: ['user', 'brand', 'image', 'name', 'size']
+    props: ['user', 'brand', 'image', 'name', 'size', 'ID'],
+    computed: {
+            cigarCount: function(){
+                console.log(this.user, this.ID);
+                return this.user.cigars.find( (cigar) => {
+                    return cigar.id === this.ID;
+                }).count;
+            }
+        }
 });
 
 // HUMIDOR SEARCH

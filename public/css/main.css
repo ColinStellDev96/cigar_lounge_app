@@ -1,5 +1,5 @@
 body {
-    background-color: #34291b;
+    background-color: #34291B;
     font-family: Arial, sans-serif;
 }
 
@@ -63,6 +63,21 @@ input {
     background-color: #f3e598;
     border-color: #c9a35e;
     font-size: 16px;
+    color: #34291b;
+}
+
+.form-control:focus {
+    background-color: #f3e598;
+    border-color: #c9a35e;
+    font-size: 16px;
+    color: #34291b;
+}
+
+.form-control:active {
+    background-color: #f3e598;
+    border-color: #c9a35e;
+    font-size: 16px;
+    color: #34291b;
 }
 
 .btn {
