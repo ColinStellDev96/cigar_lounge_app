@@ -54,15 +54,15 @@ $(document).ready(function() {
             },
             signUp: function(event) {
                 event.preventDefault();
-                console.log(this.username, this.password);
+                // console.log(this.username, this.password);
                 $.post('/signup', {
                     username: this.username,
                     password: this.password,
                     cigars: {}
                 }, (data) => {
                     console.log(data);
-                    this.username = "";
-                    this.password = "";
+                    this.username = '';
+                    this.password = '';
                     window.location = "/dashboard";
                 });
             },
@@ -72,9 +72,9 @@ $(document).ready(function() {
                     username: this.username,
                     password: this.password
                 }, (data) => {
-                    console.log(data);
-                    this.username = "";
-                    this.password = "";
+                    // console.log(data);
+                    this.username = '';
+                    this.password = '';
                     window.location = '/dashboard';
                 });
             }
